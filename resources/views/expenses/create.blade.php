@@ -12,10 +12,7 @@
             <h3>Add New Expense Entry:</h3>
                 <form method="POST" action="{{ route('expenses.store') }}">
                 @csrf
-                <div class="form-group">
-                    <label for="">User ID :</label>
-                        <input id="price" type="number" class="form-control @error('user_id') is-invalid @enderror" name="user_id" value="{{ old('user_id') }}" required autocomplete="user_id" placeholder="Enter User ID" autofocus>
-                </div>
+                
                 <div class="form-group">
                     <label for="">Items : </label>
                         <input id="items" type="text" class="form-control @error('items') is-invalid @enderror" name="items" value="{{ old('items') }}" required autocomplete="items" placeholder="Enter an Item" autofocus>

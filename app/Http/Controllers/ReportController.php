@@ -3,27 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Income;
-use Auth;
 
-class IncomeController extends Controller
+class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function __construct(){
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        $user_id = Auth::user()->id;
-        $incomes = Income::where('user_id',ucwords($user_id))->paginate(10);
-        return view('income.index',compact('incomes'))
-            ->with('i',(request()->input('page',1) - 1) * 10);
+        //
     }
 
     /**
@@ -33,8 +23,7 @@ class IncomeController extends Controller
      */
     public function create()
     {
-        return view('income.create');
-
+        //
     }
 
     /**
@@ -45,14 +34,7 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = Auth::user()->id;
-        $request->validate([
-            'salary' => 'required',
-            'date' => 'required',
-        ]);
-        Income::create($request->all() + ['user_id' => $user_id]);
-        return redirect()->route('income.index')
-            ->with('sucess','Income Added Successfully');
+        //
     }
 
     /**
@@ -74,7 +56,7 @@ class IncomeController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**

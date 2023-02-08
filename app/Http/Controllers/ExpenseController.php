@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Auth;
 
 class ExpenseController extends Controller
 {
@@ -20,9 +21,10 @@ class ExpenseController extends Controller
     
     public function index()
     {
-        $expenses = Expense::latest()->paginate(10);
+        $user_id = Auth::user()->id;
+        $expenses = Expense::where('user_id',ucwords($user_id))->paginate(5);
         return view('expenses.index',compact('expenses'))
-            ->with('i',(request()->input('page',1) - 1) * 10);
+            ->with('i',(request()->input('page',1) - 1) * 5);
     }
 
     /**
@@ -43,13 +45,15 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $user_id = Auth::user()->id;
         $request->validate([
             'items' => 'required',
             'price' => 'required',
             'date' => 'required',
         ]);
 
-        Expense::create($request->all());
+        Expense::create($request->all() + ['user_id' => $user_id]);
 
         return redirect()->route('expenses.index')
             ->with('success','Expense Created Successfully');
