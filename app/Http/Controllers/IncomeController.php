@@ -21,7 +21,7 @@ class IncomeController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $incomes = Income::where('user_id',ucwords($user_id))->paginate(10);
+        $incomes = Income::orderBy('date','desc')->where('user_id',ucwords($user_id))->paginate(10);
         return view('income.index',compact('incomes'))
             ->with('i',(request()->input('page',1) - 1) * 10);
     }

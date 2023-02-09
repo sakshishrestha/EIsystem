@@ -22,3 +22,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('expenses','App\Http\Controllers\ExpenseController');
 Route::resource('income','App\Http\Controllers\IncomeController');
+Route::any('/reports/index', 'App\Http\Controllers\ReportController@index')->name('reports');

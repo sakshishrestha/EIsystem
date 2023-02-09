@@ -22,7 +22,7 @@ class ExpenseController extends Controller
     public function index()
     {
         $user_id = Auth::user()->id;
-        $expenses = Expense::where('user_id',ucwords($user_id))->paginate(5);
+        $expenses = Expense::orderBy('date','desc')->where('user_id',ucwords($user_id))->paginate(5);
         return view('expenses.index',compact('expenses'))
             ->with('i',(request()->input('page',1) - 1) * 5);
     }

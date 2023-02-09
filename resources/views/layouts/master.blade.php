@@ -22,6 +22,66 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(function() {
+            $('.date-picker-year').datepicker({
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'yy',
+                onClose: function(dateText, inst) { 
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).datepicker('setDate', new Date(year, 1));
+                }
+            });
+        $(".date-picker-year").focus(function () {
+                $(".ui-datepicker-month").hide();
+            });
+        });
+
+        // $(function() {
+        //     $('#yearPicker').datepicker( {
+        //         changeMonth: true,
+        //         changeYear: true,
+        //         showButtonPanel: true,
+        //         dateFormat: 'MM yy',
+        //         onClose: function(dateText, inst) { 
+        //             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+        //             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+        //             $(this).datepicker('setDate', new Date(year, month, 1));
+        //         }
+        //     });
+        // });​
+    // $('#yearPicker').datetimepicker({
+    // format      :   "YYYY",
+    // viewMode    :   "years", 
+    // });
+// $(function() {
+    //     $("#datepicker").datepicker({  maxDate: new Date() });
+    // });
+
+// $(document).ready(function(){
+//     $('#datepicker').datepicker({
+//         dateFormat: "mm-dd-yy",
+//         changeMonth: true,
+//         chnageYear: true,
+//         maxDate: new Date(),
+//     })
+// });
+
+// $('#datepicker').datepicker({
+//         format: "mm/dd/yyyy",
+//         autoclose: true,
+//         orientation: "top",
+//         endDate: "today"
+
+//   });
+</script>
 
 </head>
 
@@ -96,6 +156,8 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script> -->
     <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     
 
