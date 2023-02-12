@@ -36,7 +36,6 @@
                     <td>{{ $expense->date }}</td>
                     <td>
                         <form action="{{ route('expenses.destroy', $expense->id)}}" method="POST">
-                            <!-- <a class="btn btn-info" href="{{ route('expenses.show', $expense->id) }}">Show</a> -->
                             <a class="fas fa-edit" href="{{ route('expenses.edit', $expense->id) }}"></a>
 
                             @csrf

@@ -25,9 +25,6 @@ class HomeController extends Controller
    
     public function index()
     {   
-        // if(Auth::check()){
-        //     $id = Auth::user()->getId();
-        // }
         return view('home');
         
     }

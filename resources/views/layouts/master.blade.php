@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,65 +21,20 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
-    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-
-    <script type="text/javascript">
-        $(function() {
-            $('.date-picker-year').datepicker({
-                changeYear: true,
-                showButtonPanel: true,
-                dateFormat: 'yy',
-                onClose: function(dateText, inst) { 
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker('setDate', new Date(year, 1));
-                }
-            });
-        $(".date-picker-year").focus(function () {
-                $(".ui-datepicker-month").hide();
-            });
-        });
-
-        // $(function() {
-        //     $('#yearPicker').datepicker( {
-        //         changeMonth: true,
-        //         changeYear: true,
-        //         showButtonPanel: true,
-        //         dateFormat: 'MM yy',
-        //         onClose: function(dateText, inst) { 
-        //             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-        //             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-        //             $(this).datepicker('setDate', new Date(year, month, 1));
-        //         }
-        //     });
-        // });​
-    // $('#yearPicker').datetimepicker({
-    // format      :   "YYYY",
-    // viewMode    :   "years", 
-    // });
-// $(function() {
-    //     $("#datepicker").datepicker({  maxDate: new Date() });
-    // });
-
-// $(document).ready(function(){
-//     $('#datepicker').datepicker({
-//         dateFormat: "mm-dd-yy",
-//         changeMonth: true,
-//         chnageYear: true,
-//         maxDate: new Date(),
-//     })
-// });
-
-// $('#datepicker').datepicker({
-//         format: "mm/dd/yyyy",
-//         autoclose: true,
-//         orientation: "top",
-//         endDate: "today"
-
-//   });
+ 
+  <script>
+function week(e) {
+  var x = document.getElementById("week");
+  var y = document.getElementById("ymd")
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+  }
+e.preventDefault();
+}
 </script>
 
 </head>
@@ -156,8 +110,6 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script> -->
     <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     
 

@@ -5,8 +5,6 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\Expense;
 use App\Models\Income;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -24,30 +22,8 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $user_id = Auth::user()->id;
-        // $fromDate = $request->get('fromDate');
-        // $toDate = $request->get('toDate');
-        
-        // if(request()->get('fromDate') && request()->get('toDate')){
-        //     $expenses = DB::table('expenses')->select()
-        //     ->where('date', '>=', $fromDate)
-        //     ->where('date', '<=', $toDate) 
-        //     ->paginate(10);
-        //     $total = $expenses->sum('price');
-            
-        //     return view ('reports.index',compact('expenses','total'))
-        //     ->with('i', (request()->input('page', 1) * 10));
-        // }
-        // $monthyear = $request->get('monthyear');
-        // $monthexpense = Expense::whereMonth("created_at",">=", Carbon::now()->month)->get();
-
-        // dd($monthexpense);
-        // $dateS = Carbon::now()->startOfMonth()->subMonth(3);
-        // $dateE = Carbon::now()->startOfMonth();
-        // $totalSpent = Expense::select('items','price','date')
-        //                 ->whereBetween('date',[$dateS,$dateE])
-        //                 ->get();
-        
-        
+        $fromDate = $request->get('fromDate');
+        $toDate = $request->get('toDate');
 
         $year = $request->get('year');
         $month = $request->get('month');
@@ -60,8 +36,15 @@ class ReportController extends Controller
                         ->where('date','>=',$yearStart)
                         ->where('date','<=',$yearEnd)
                         ->get(); 
+            $queryIncome = Income::where('user_id',ucwords($user_id))
+            ->where('date','>=',$yearStart)
+            ->where('date','<=',$yearEnd)
+            ->get(); 
             $querySum = $query->sum('price');
-            return view('reports.index',compact('query','querySum'));
+            $queryIncomeSum = $queryIncome->sum('salary');
+            $saving = $queryIncomeSum - $querySum;
+            return view('reports.index',compact('query','querySum','queryIncomeSum','saving'))
+            ->with('i', (request()->input('page', 1) * 10));
                
         }
         elseif($year == !null && $month && $day==null){
@@ -71,8 +54,15 @@ class ReportController extends Controller
                         ->where('date','>=',$monthStart)
                         ->where('date','<=',$monthEnd)
                         ->get(); 
+            $queryIncome = Income::where('user_id',ucwords($user_id))
+                        ->where('date','>=',$monthStart)
+                        ->where('date','<=',$monthEnd)
+                        ->get();
             $querySum = $query->sum('price');
-            return view('reports.index',compact('query','querySum'));
+            $queryIncomeSum = $queryIncome->sum('salary');
+            $saving = $queryIncomeSum - $querySum;
+            return view('reports.index',compact('query','querySum','queryIncomeSum','saving'))
+            ->with('i', (request()->input('page', 1) * 10));
         }
         elseif($year ==!null && $month == !null && $day ){
             $dayStart = $year.'-'.$month.'-'.$day;
@@ -81,23 +71,55 @@ class ReportController extends Controller
                         ->where('date','>=',$dayStart)
                         ->where('date','<=',$dayEnd)
                         ->get(); 
+            $queryIncome = Income::where('user_id',ucwords($user_id))
+                        ->where('date','>=',$year.'-'.$month.'-01')
+                        ->where('date','<=',$year.'-'.$month.'-30')
+                        ->get();
             $querySum = $query->sum('price');
-            return view('reports.index',compact('query','querySum'));
+            $queryIncomeSum = $queryIncome->sum('salary');
+            $saving = $queryIncomeSum - $querySum;
+            return view('reports.index',compact('query','querySum','queryIncomeSum','saving'))
+            ->with('i', (request()->input('page', 1) * 10));
         }
         elseif($year == null && $month == !null){
-            echo "Please Select Year for Month";
+            return redirect()->route('reports')
+            ->with('error','Please Select Year for Month');
         }
         elseif($month == null && $day == !null){
-            echo "Please Select Month for Day";
+            return redirect()->route('reports')
+            ->with('error','Please Select Month for Day');
         }
- 
+        elseif($fromDate && $toDate){
+            $query = Expense::where('user_id',ucwords($user_id))
+                    ->where('date', '>=', $fromDate)
+                    ->where('date', '<=', $toDate) 
+                    ->paginate(10);
+            $queryIncome = Income::where('user_id',ucwords($user_id))
+                    ->where('date','>=',$fromDate)
+                    ->where('date','<=',$toDate)
+                    ->get();
+            $querySum = $query->sum('price');
+            $queryIncomeSum = $queryIncome->sum('salary');
+            $saving = $queryIncomeSum - $querySum;
+            return view('reports.index',compact('query','querySum','queryIncomeSum','saving'))
+            ->with('i', (request()->input('page', 1) * 10));
+
+        } 
         $query = Expense::orderBy('date','desc')
                 ->where('user_id',ucwords($user_id))
                 ->paginate(5);
+        $queryIncome = Income::orderBy('date','desc')
+                ->where('user_id',ucwords($user_id))
+                ->paginate(5);
         $querySum = $query->sum('price');
-        return view('reports.index',compact('query','querySum'));
+        $queryIncomeSum = $queryIncome->sum('salary');
+        $saving = $queryIncomeSum - $querySum;
+
+        return view('reports.index',compact('query','querySum','queryIncomeSum','saving'))
+        ->with('i', (request()->input('page', 1) * 10));
         
     }
+
 
     /**
      * Show the form for creating a new resource.

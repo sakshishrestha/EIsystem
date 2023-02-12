@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\Income;
-use Auth;
 
 class IncomeController extends Controller
 {
@@ -18,12 +18,45 @@ class IncomeController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user_id = Auth::user()->id;
-        $incomes = Income::orderBy('date','desc')->where('user_id',ucwords($user_id))->paginate(10);
-        return view('income.index',compact('incomes'))
-            ->with('i',(request()->input('page',1) - 1) * 10);
+            $year = $request->get('year');
+            $month = $request->get('month');
+    
+            if($year && $month==null){
+                $yearStart = $year . '-01-01';
+                $yearEnd = $year . '-12-30';
+                $query = Income::where('user_id',ucwords($user_id))
+                            ->where('date','>=',$yearStart)
+                            ->where('date','<=',$yearEnd)
+                            ->get(); 
+                $querySum = $query->sum('salary');
+                return view('income.index',compact('query','querySum'));
+                   
+            }
+            elseif($year && $month){
+                $yearMonthStart = $year.'-'.$month.'-01';
+                $yearMonthEnd = $year.'-'.$month.'-30';
+                $query = Income::where('user_id',ucwords($user_id))
+                            ->where('date','>=',$yearMonthStart)
+                            ->where('date','<=',$yearMonthEnd)
+                            ->get(); 
+                $querySum = $query->sum('salary');
+                return view('income.index',compact('query','querySum'));
+            }
+            elseif($year == null && $month == !null){
+                return redirect()->route('income.index')
+                ->with('error','Please Select Year for Month');
+            }
+            
+     
+            $query = Income::orderBy('date','desc')
+                    ->where('user_id',ucwords($user_id))
+                    ->paginate(5);
+            $querySum = $query->sum('salary');
+            return view('income.index',compact('query','querySum'));
+            
     }
 
     /**
@@ -52,7 +85,7 @@ class IncomeController extends Controller
         ]);
         Income::create($request->all() + ['user_id' => $user_id]);
         return redirect()->route('income.index')
-            ->with('sucess','Income Added Successfully');
+            ->with('success','Income Added Successfully');
     }
 
     /**
