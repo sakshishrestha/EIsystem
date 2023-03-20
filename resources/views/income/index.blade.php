@@ -86,7 +86,20 @@
                 </tr>
                 @endforeach
             </table>
+
             <h5>Total Income = {{ $querySum }}</h5>
+
+            <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group mb-4">
+                    <div class="custom-file text-left">
+                        <input type="file" name="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary">Import Income</button>
+                <a class="btn btn-success" href="{{ route('export-income') }}">Export Income</a>
+            </form>
            
 
         </div>

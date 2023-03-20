@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Income;
+use App\Imports\ImportIncome;
+use App\Exports\ExportIncome;
 
 class IncomeController extends Controller
 {
@@ -131,5 +134,18 @@ class IncomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function importView(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new ImportIncome, $request->file('file')->store('file'));
+        return redirect()->back();
+    }
+
+    public function exportIncomes(Request $request){
+        return Excel::download(new ExportIncome, 'incomes.xlsx');
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Auth;
+use App\Imports\ImportExpense;
+use App\Exports\ExportExpense;
 
 class ExpenseController extends Controller
 {
@@ -114,4 +117,19 @@ class ExpenseController extends Controller
         return redirect()->route('expenses.index')
             ->with('success','Expense deleted successfully');
     }
+
+    public function importView(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new ImportExpense, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
+    public function exportExpenses(Request $request){
+        // return $request;
+        return Excel::download(new ExportExpense, 'expenses.xlsx');
+    }
+
 }
